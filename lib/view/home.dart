@@ -1,4 +1,5 @@
 import 'package:birthdays/constants.dart';
+import 'package:birthdays/view/pages/all_page.dart';
 import 'package:birthdays/view/pages/today_page.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +10,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     TodayPage(),
-    Text('Index 1: Business', style: optionStyle,),
-    Text('Index 2: School',style: optionStyle,),
+    AllPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -33,16 +31,12 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.today),
+            label: 'Today',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.calendar_today),
+            label: 'All',
           ),
         ],
         currentIndex: _selectedIndex,

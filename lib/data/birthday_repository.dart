@@ -1,3 +1,4 @@
+import 'package:birthdays/constants.dart';
 import 'package:birthdays/data/repository.dart';
 import 'package:birthdays/model/birthday.dart';
 import 'package:flutter/foundation.dart';
@@ -10,14 +11,14 @@ class BirthdayRepository extends Repository<Birthday> {
   Stream<Iterable<Birthday>> receive() {
     return firestore
      .collection("birthdays")
-     //.where("user", isEqualTo: "user" )
+     .where("owner", isEqualTo: App.auth.currentUser.uid)
      .snapshots()
      .map((qsnapshot) {
         debugPrint("qsnapshot ${qsnapshot.toString()}");
         return qsnapshot.docs.map(
-          (doc) => Birthday(doc.id, doc.data()["name"], DateTime.now())
+          (doc) => Birthday(doc.id, doc.data()["name"], doc.data()["date"].toDate())
         );
-     } );
+     } ).asBroadcastStream();
   }
 
   @override

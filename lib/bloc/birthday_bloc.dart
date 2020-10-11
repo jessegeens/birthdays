@@ -11,14 +11,19 @@ class BirthdayBloc implements BLoC {
   Repository<Birthday> _repository = BirthdayRepository();
 
   final _birthdayController = StreamController<List<Birthday>>();
+  final _birthdaysTodayController = StreamController<List<Birthday>>();
   
   Stream<List<Birthday>> get birthdayStream => _birthdayController.stream;
+
+  Stream<List<Birthday>> get birthdaysTodayStream => _birthdayController.stream.map(
+    (birthdaylist) => birthdaylist.where((birthday) => birthday.isToday).toList()
+  );
   
   BirthdayBloc(){
     _repository.receive().forEach( 
-      //(bdays) => _birthdayController.sink.add(bdays.map(() =>))
       (bdays) {
         _birthdayController.sink.add(bdays.toList());
+        _birthdaysTodayController.sink.add(bdays.toList().where((birthday) => birthday.isToday).toList());
       }
     );
   }
@@ -26,6 +31,10 @@ class BirthdayBloc implements BLoC {
   @override
   void dispose() {
     _birthdayController.close();
+    _birthdaysTodayController.close();
   }
   
 }
+
+/*_birthdaysTodayController.stream;
+  /* */ */
